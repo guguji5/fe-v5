@@ -31,3 +31,4 @@ jobs:
         run: |
           npm install
           npm run build
+          rsync -avz --delete ./pub/ root@116.85.38.135:/root/n9e/pub/
