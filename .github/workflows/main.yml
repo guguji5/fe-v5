@@ -19,6 +19,8 @@ jobs:
         with:
           key: ${{ secrets.DC2_116 }}
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - uses: actions/checkout@v2
 
@@ -31,4 +33,6 @@ jobs:
         run: |
           npm install
           npm run build
-          rsync -avz --delete ./pub/ root@116.85.38.135:/root/n9e/pub/
+          
+      - name: Deploy with rsync
+        run: rsync -avz --delete ./pub/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/n9e/pub/
